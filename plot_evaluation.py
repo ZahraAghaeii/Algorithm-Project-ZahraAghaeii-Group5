@@ -59,7 +59,7 @@ def plot_grouped_bars(
     plt.figure()
     for j, method in enumerate(methods):
         vals = [data[t].get(method, 0.0) for t in text_ids]
-        # Shift each method bar in the group
+        
         xs = [x + (j - (method_count - 1) / 2) * bar_width for x in x_positions]
         plt.bar(xs, vals, width=bar_width, label=method)
 

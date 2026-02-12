@@ -85,7 +85,7 @@ def textrank_summarize(
     outgoing_sums = [_row_outgoing_sum(weights, j) for j in range(n)]
 
     for _ in range(config.max_iter):
-        new_scores = [1.0 - config.damping for _ in range(n)]
+        new_scores = [(1.0 - config.damping)/n for _ in range(n)]
         max_change = 0.0
 
         for i in range(n):

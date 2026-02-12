@@ -29,7 +29,7 @@ def main() -> None:
         llm_target_sentences=3,
     )
 
-    # ----------- PRINT RESULTS -----------
+    # PRINT RESULTS 
     for text_key, items in results.items():
         print("\n" + "=" * 80)
         print(text_key)
@@ -42,7 +42,7 @@ def main() -> None:
             print(f"coverage: {r.coverage:.4f}")
             print("summary:", r.summary)
 
-    # ----------- SAVE CSV -----------
+    #  SAVE CSV 
     output_path = Path("evaluation_results.csv")
 
     with output_path.open("w", newline="", encoding="utf-8") as f:

@@ -1,7 +1,0 @@
-text_id,method,runtime_sec,words,redundancy,coverage,summary
-text_1,textrank,0.000410,13,0.000000,1.000000,Machine learning models help doctors detect diseases early Early diagnosis improves treatment outcomes
-text_1,llm,1.967811,23,0.000000,0.521739,"Artificial intelligence is transforming medicine by enabling machine learning models that assist doctors in early disease detection, which leads to improved treatment outcomes."
-text_1,hybrid,1.914728,34,0.000000,0.680000,"Machine learning models help doctors detect diseases early Early diagnosis improves treatment outcomes Artificial intelligence is transforming medicine by enabling machine learning models to assist doctors in early disease detection, which improves treatment outcomes"
-text_2,textrank,0.000545,19,0.000000,1.000000,Renewable energy sources like solar and wind reduce carbon emissions Energy storage is important for balancing supply and demand
-text_2,llm,1.626488,27,0.000000,0.720000,"Renewable energy sources such as solar and wind help reduce carbon emissions, while energy storage is crucial for balancing supply and demand. Additionally, grid modernization enhances reliability."
-text_2,hybrid,1.560219,48,0.000000,0.645161,"Renewable energy sources like solar and wind reduce carbon emissions Energy storage is important for balancing supply and demand Renewable energy sources such as solar and wind help reduce carbon emissions, while energy storage plays a crucial role in balancing supply and demand Additionally, grid modernization enhances reliability"

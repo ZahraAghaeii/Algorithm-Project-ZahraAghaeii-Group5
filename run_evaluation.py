@@ -29,7 +29,7 @@ def main() -> None:
         llm_target_sentences=3,
     )
 
-    # PRINT RESULTS 
+
     for text_key, items in results.items():
         print("\n" + "=" * 80)
         print(text_key)

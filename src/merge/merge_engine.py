@@ -9,33 +9,17 @@ from src.utils.text_splitter import split_sentences
 
 @dataclass(frozen=True)
 class MergeConfig:
-    """
-    Configuration for the hybrid merge engine.
-
-    redundancy_threshold:
-        If a candidate sentence is too similar to any already-selected sentence
-        (cosine similarity >= threshold), it will be skipped.
-
-    prefer_extractive:
-        If True, try to keep extractive sentences (TextRank output) as anchors first.
-
-    max_abstractive_sentences:
-        Limit how many sentences from the abstractive text we consider (for efficiency).
-    """
+    
     redundancy_threshold: float = 0.75
     prefer_extractive: bool = True
     max_abstractive_sentences: int = 60
 
 
 def _cosine_sparse(v1: dict[str, float], v2: dict[str, float]) -> float:
-    """
-    Compute cosine similarity between two sparse TF-IDF vectors.
-    Vectors are stored as dicts: {term: weight}.
-    """
+    
     if not v1 or not v2:
         return 0.0
 
-    # Dot product over intersection
     dot = 0.0
     if len(v1) > len(v2):
         v1, v2 = v2, v1
@@ -54,9 +38,7 @@ def _cosine_sparse(v1: dict[str, float], v2: dict[str, float]) -> float:
 
 
 def _dedupe_keep_order(sentences: List[str]) -> List[str]:
-    """
-    Remove exact duplicate sentences while preserving order.
-    """
+    
     seen = set()
     out: List[str] = []
     for s in sentences:
@@ -75,15 +57,7 @@ def _build_candidate_pool(
     abstractive_text: Optional[str],
     config: MergeConfig,
 ) -> Tuple[List[str], List[bool]]:
-    """
-    Build candidates from:
-      - extractive_summary (list of sentences)
-      - abstractive_text (string -> split into sentences)
-
-    Returns:
-        candidates: list of unique sentences (order preserved)
-        is_extractive: parallel list indicating source of each candidate
-    """
+    
     ext = _dedupe_keep_order(extractive_summary)
 
     abs_sents: List[str] = []
@@ -95,12 +69,12 @@ def _build_candidate_pool(
     candidates: List[str] = []
     is_extractive: List[bool] = []
 
-    # 1) Put extractive anchors first
+    #Put extractive anchors 
     for s in ext:
         candidates.append(s)
         is_extractive.append(True)
 
-    # 2) Add abstractive sentences after (avoid duplicates)
+    #Add abstractive sentences
     existing = set(candidates)
     for s in abs_sents:
         if s in existing:
@@ -113,12 +87,7 @@ def _build_candidate_pool(
 
 
 def _centrality_scores(vectors: List[dict[str, float]]) -> List[float]:
-    """
-    Lightweight coverage heuristic:
-    score[i] = sum_j cosine(i, j) for j != i
-
-    Higher score => more semantically connected to others => good for coverage.
-    """
+    
     n = len(vectors)
     scores = [0.0] * n
     for i in range(n):
@@ -138,26 +107,10 @@ def merge_summaries(
     config: MergeConfig = MergeConfig(),
     extra_stopwords: Optional[List[str]] = None,
 ) -> List[str]:
-    """
-    Merge extractive and abstractive summaries into a final k-sentence summary.
-
-    Version 1 strategy:
-      1) Build candidate pool: extractive anchors + abstractive sentences.
-      2) Vectorize candidates using TF-IDF.
-      3) Rank candidates by a centrality (coverage) heuristic.
-      4) Select up to k sentences with redundancy filtering:
-         - Optionally select extractive anchors first
-         - Fill remaining slots by centrality score
-         - If still short, relax redundancy constraint as a fallback
-
-    Notes:
-      - This module is independent of the actual LLM.
-      - You can pass a mock abstractive_text during development/testing.
-    """
+    
     if k <= 0:
         return []
 
-    # If no abstractive text exists, fall back to extractive
     if not abstractive_text or not abstractive_text.strip():
         return _dedupe_keep_order(extractive_summary)[:k]
 
@@ -179,7 +132,7 @@ def merge_summaries(
                 return True
         return False
 
-    # Step A: pick extractive anchors first (optional)
+    #pick extractive anchors
     if config.prefer_extractive:
         for i, flag in enumerate(is_extractive):
             if not flag:
@@ -190,7 +143,7 @@ def merge_summaries(
                 continue
             selected.append(i)
 
-    # Step B: fill remaining slots by centrality rank
+    #fill remaining slots by centrality rank
     ranked = sorted(range(len(candidates)), key=lambda i: (-centrality[i], i))
     for i in ranked:
         if len(selected) >= k:
@@ -201,7 +154,7 @@ def merge_summaries(
             continue
         selected.append(i)
 
-    # Step C: fallback (if redundancy was too strict)
+    #fallback
     if len(selected) < k:
         for i in ranked:
             if len(selected) >= k:

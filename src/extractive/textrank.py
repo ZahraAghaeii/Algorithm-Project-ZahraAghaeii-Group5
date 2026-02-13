@@ -8,19 +8,7 @@ from src.extractive.similarity import build_tfidf_vectors, cosine_similarity_mat
 
 @dataclass(frozen=True)
 class TextRankConfig:
-    """
-    Configuration for TextRank.
-
-    damping:
-        Damping factor (typically 0.85).
-    max_iter:
-        Maximum number of iterations for convergence.
-    eps:
-        Convergence threshold based on max absolute score change.
-    edge_threshold:
-        Optional threshold to drop weak edges (improves speed / reduces noise).
-        If None, keep all positive edges.
-    """
+    
     damping: float = 0.85
     max_iter: int = 50
     eps: float = 1e-6
@@ -52,17 +40,7 @@ def textrank_summarize(
     config: TextRankConfig = TextRankConfig(),
     extra_stopwords: List[str] | None = None,
 ) -> Tuple[List[str], List[float]]:
-    """
-    Run TextRank (graph-based extractive summarization).
-
-    Tie-break policy (as specified in Phase 1):
-    1) Prefer earlier sentence index if scores are equal.
-    2) If still tied, prefer shorter sentence length.
-
-    Returns:
-        summary_sentences: selected sentences (in original order)
-        scores: sentence scores aligned with input sentence order
-    """
+    
     if k <= 0:
         return [], []
 
@@ -70,7 +48,6 @@ def textrank_summarize(
     if n == 0:
         return [], []
 
-    # If k >= n, return all sentences (no crash / no trimming).
     if k >= n:
         return sentences[:], [1.0 / n for _ in range(n)]
 
@@ -78,10 +55,8 @@ def textrank_summarize(
     sim = cosine_similarity_matrix(vectors)
     weights = _apply_edge_threshold(sim, config.edge_threshold)
 
-    # Initialize scores uniformly.
     scores = [1.0 / n for _ in range(n)]
 
-    # Precompute outgoing weight sums to avoid repeated sums.
     outgoing_sums = [_row_outgoing_sum(weights, j) for j in range(n)]
 
     for _ in range(config.max_iter):
@@ -90,7 +65,6 @@ def textrank_summarize(
 
         for i in range(n):
             acc = 0.0
-            # Incoming edges: j -> i
             for j in range(n):
                 w_ji = weights[j][i]
                 if w_ji <= 0.0:
@@ -111,8 +85,6 @@ def textrank_summarize(
         if max_change < config.eps:
             break
 
-    # Rank indices by score desc, then by earlier index, then by shorter length.
-    # (The last two implement the requested tie-break rule deterministically.)
     ranked = sorted(
         range(n),
         key=lambda idx: (-scores[idx], idx, len(sentences[idx])),
@@ -121,6 +93,5 @@ def textrank_summarize(
     selected = ranked[:k]
     selected_set = set(selected)
 
-    # Return in original order for readability.
     summary = [sentences[i] for i in range(n) if i in selected_set]
     return summary, scores

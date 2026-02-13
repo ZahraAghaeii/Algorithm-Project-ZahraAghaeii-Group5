@@ -10,10 +10,7 @@ def _tf(tokens: List[str]) -> Counter:
 
 
 def _idf(docs: List[List[str]]) -> Dict[str, float]:
-    """
-    Compute IDF with smoothing:
-      idf(t) = log((1 + N) / (1 + df(t))) + 1
-    """
+    
     n_docs = len(docs)
     df: Counter = Counter()
     for doc in docs:
@@ -39,7 +36,6 @@ def _cosine(v1: Dict[str, float], v2: Dict[str, float]) -> float:
         return 0.0
 
     dot = 0.0
-    # Iterate over smaller dict for efficiency
     if len(v1) > len(v2):
         v1, v2 = v2, v1
     for k, a in v1.items():
@@ -58,13 +54,7 @@ def build_tfidf_vectors(
     sentences: List[str],
     extra_stopwords: List[str] | None = None,
 ) -> Tuple[List[Dict[str, float]], Set[str]]:
-    """
-    Convert sentences into TF-IDF sparse vectors.
-
-    Returns:
-        vectors: list of {term: weight} dictionaries
-        stopwords: the stopword set used (useful for reproducibility)
-    """
+    
     stopwords = build_stopwords(extra_stopwords)
 
     docs_tokens: List[List[str]] = []
@@ -79,10 +69,7 @@ def build_tfidf_vectors(
 
 
 def cosine_similarity_matrix(vectors: List[Dict[str, float]]) -> List[List[float]]:
-    """
-    Build an NxN cosine similarity matrix.
-    Diagonal is 0.0 (we do not connect a sentence to itself).
-    """
+    
     n = len(vectors)
     sim = [[0.0 for _ in range(n)] for _ in range(n)]
     for i in range(n):

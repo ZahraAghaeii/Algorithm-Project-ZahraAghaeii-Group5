@@ -1,6 +1,6 @@
 # Algorithmic Summarization Engine (Phase 1)
 
-## 📌 Project Overview
+##  Project Overview
 This project is the Phase 1 implementation of the final project for the **Algorithm Design** course.
 
 The goal is to design and analyze a **Hybrid Text Summarization Engine** that combines:
@@ -9,18 +9,18 @@ The goal is to design and analyze a **Hybrid Text Summarization Engine** that co
 - A **Large Language Model (LLM)** for abstractive summarization
 - A future merging strategy (Phase 2)
 
-📍 Track: **Algorithmic Summarization Engine**  
-📍 Phase: **Phase 1 — Problem Analysis & Algorithm Design**
+ Track: **Algorithmic Summarization Engine**  
+ Phase: **Phase 1 — Problem Analysis & Algorithm Design**
 
 ---
 
-## 👥 Team Members
+##  Team Members
 - Zahra Aghaeii — 40214923  
 - Yeganeh Zafarzadeh — 40219303  
 
 ---
 
-## 🎯 Problem Definition
+##  Problem Definition
 Given an input text:
 
 \[
@@ -41,7 +41,7 @@ Outputs:
 
 ---
 
-## 🧠 Algorithms Considered
+##  Algorithms Considered
 
 ### 1. Frequency-Based Summarization
 Baseline approach based on keyword frequency.
@@ -64,7 +64,7 @@ Top-k ranked sentences form the extractive summary.
 
 ---
 
-## 📌 Complexity Analysis
+##  Complexity Analysis
 
 - Similarity Graph Construction: **O(n²)**
 - Ranking Iterations: **O(iter · n²)**
@@ -73,7 +73,7 @@ Top-k ranked sentences form the extractive summary.
 
 ---
 
-## 🤖 Role of LLM
+##  Role of LLM
 LLM is used only as an oracle component:
 
 - Produces a fluent abstractive summary  
@@ -82,7 +82,7 @@ LLM is used only as an oracle component:
 
 ---
 
-## 🧪 Manual Test Cases (Phase 1)
+##  Manual Test Cases (Phase 1)
 
 Includes:
 

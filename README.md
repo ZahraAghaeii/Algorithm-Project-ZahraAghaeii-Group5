@@ -1,17 +1,12 @@
----
+#  Hybrid Summarization Engine (TextRank + LLM)
 
-# Hybrid Summarization Engine (TextRank + LLM)
-
-### Final Project: Design and Analysis of Algorithms
-
-##  Project Overview
-
+## Overview
 This project implements a Hybrid Text Summarization System that combines the structural reliability of graph-based algorithms with the semantic intelligence of Large Language Models (LLMs). The engine uses a custom TextRank implementation for extractive importance and GPT-4o-mini for abstractive refinement.
 
-##  Project Structure
+---
 
-Below is the complete directory tree of the project, including all core modules and utility scripts:
-
+## Project Structure
+```
 .
 ├── src/
 │   ├── extractive/          # Extractive Summarization (Phase 1 core)
@@ -45,56 +40,45 @@ Below is the complete directory tree of the project, including all core modules 
 ├── run_evaluation.py        # Main script to run metrics on sample dataset
 ├── plot_evaluation.py       # Script to generate charts from results
 └── requirements.txt         # Project dependencies
-
-
-##  Features & Modules
-
-### 1. Extractive Module (TextRank)
+```
+---
+## Features & Modules
+1. Extractive Module (TextRank)
 
 * Graph Construction: Sentences are nodes; edges are weighted by TF-IDF Cosine Similarity.
 * Ranking: Iterative power method until convergence.
 * Tie-breaking: Implements strict rules (Lower Index > Shorter Length) as per project document requirements.
 
-### 2. Abstractive Module (LLM)
+2. Abstractive Module (LLM)
 
 * Uses gpt-4o-mini to rephrase and condense the core ideas of the text.
 * Focused on fluency and grammatical coherence.
 
-### 3. Merge Engine (Hybrid)
+3. Merge Engine (Hybrid)
 
 * Combines sentences from both methods.
 * Redundancy Filter: Uses a similarity threshold (0.75) to ensure no two sentences in the final summary convey the same info.
 
-##  Execution Guide
+---
 
-### Installation
-
+## Installation
+Clone the repository and install dependencies:
+```
 pip install -r requirements.txt
-
-
-### Running the Web Dashboard
-
-streamlit run app.py
-
-
-### Running the Evaluation Pipeline
-
-To reproduce the analysis and plots:
-
-python run_evaluation.py
-python plot_evaluation.py
-
-
-##  Testing
-
+```
+---
+## testing
 We use pytest for quality assurance. The suite covers everything from basic sanity to "hard cases":
 
-pytest tests/
-
-
-##  Contributors
-
-* Zahra Aghaeii (Student ID: 40214923)
-* Yeganeh Zafarzadeh (Student ID: 40219303)
+pytest tests/   
 
 ---
+
+## Team
+Group 5 – Algorithm Design Course  
+Semester 1404–1405
+
+---
+## Contributors
+* Zahra Aghaeii (Student ID: 40214923)
+* Yeganeh Zafarzadeh (Student ID: 40219303)

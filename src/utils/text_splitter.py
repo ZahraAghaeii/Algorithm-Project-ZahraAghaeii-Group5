@@ -6,13 +6,7 @@ _SENT_SPLIT_RE = re.compile(r"(?:\r?\n)+|[.!؟?؛;]+")
 
 
 def split_sentences(text: str) -> List[str]:
-    """
-    Split text into sentences using simple punctuation/newline heuristics.
-    Works for Persian and English.
-
-    Returns:
-        A list of non-empty, stripped sentences in original order.
-    """
+    
     if not text or not text.strip():
         return []
 

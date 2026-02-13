@@ -18,12 +18,7 @@ _PUNCT_RE = re.compile(r"[^\w\u0600-\u06FF]+", flags=re.UNICODE)
 
 
 def normalize_text(text: str) -> str:
-    """
-    Normalize text by:
-    - Converting to lowercase (safe for English; Persian unaffected)
-    - Replacing non-word characters with spaces
-    - Collapsing repeated whitespace
-    """
+    
     text = text.strip().lower()
     text = _PUNCT_RE.sub(" ", text)
     text = re.sub(r"\s+", " ", text).strip()
@@ -31,10 +26,7 @@ def normalize_text(text: str) -> str:
 
 
 def tokenize(text: str) -> List[str]:
-    """
-    Tokenize by whitespace after normalization.
-    This is intentionally simple and works reasonably for Persian + English.
-    """
+    
     text = normalize_text(text)
     if not text:
         return []
@@ -42,9 +34,7 @@ def tokenize(text: str) -> List[str]:
 
 
 def build_stopwords(extra_stopwords: Iterable[str] | None = None) -> Set[str]:
-    """
-    Build a stopword set (Persian + English) and optionally extend it.
-    """
+    
     sw = set()
     sw.update(_DEFAULT_STOPWORDS_FA)
     sw.update(_DEFAULT_STOPWORDS_EN)
@@ -54,9 +44,7 @@ def build_stopwords(extra_stopwords: Iterable[str] | None = None) -> Set[str]:
 
 
 def filter_tokens(tokens: List[str], stopwords: Set[str] | None = None) -> List[str]:
-    """
-    Remove stopwords and very short tokens.
-    """
+    
     if stopwords is None:
         stopwords = build_stopwords()
     return [t for t in tokens if t not in stopwords and len(t) > 1]

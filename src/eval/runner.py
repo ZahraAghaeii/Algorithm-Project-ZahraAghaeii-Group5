@@ -46,17 +46,13 @@ def evaluate_texts(
     k_final: int = 4,
     llm_target_sentences: int = 3,
 ) -> Dict[str, List[EvalResult]]:
-    """
-    Evaluate TextRank vs LLM vs Hybrid on a list of input texts.
-    Returns results grouped by input index as string keys: "text_1", "text_2", ...
-    """
+    
     out: Dict[str, List[EvalResult]] = {}
 
     for idx, text in enumerate(texts, 1):
         key = f"text_{idx}"
         out[key] = []
 
-        # TextRank
         t0 = time.perf_counter()
         tr_sum = _run_textrank(text, k=k_extractive)
         t1 = time.perf_counter()

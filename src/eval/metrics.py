@@ -26,17 +26,13 @@ def sentence_count(sentences: List[str]) -> int:
 
 
 def redundancy_score(sentences: List[str]) -> float:
-    """
-    Average pairwise cosine similarity between summary sentences (TF-IDF based).
-    Higher => more redundancy.
-    """
+    
     sentences = [s.strip() for s in sentences if s and s.strip()]
     n = len(sentences)
     if n <= 1:
         return 0.0
 
     vectors, _ = build_tfidf_vectors(sentences)
-    # vectors: list[dict[str, float]]
 
     def cosine_sparse(v1: dict[str, float], v2: dict[str, float]) -> float:
         if not v1 or not v2:
@@ -65,10 +61,7 @@ def redundancy_score(sentences: List[str]) -> float:
 
 
 def coverage_score(source_text: str, summary_text: str) -> float:
-    """
-    Token coverage: fraction of unique summary tokens that appear in the source.
-    Higher => summary uses more tokens grounded in the source.
-    """
+    
     src = _unique_tokens(source_text)
     summ = _unique_tokens(summary_text)
     if not summ:

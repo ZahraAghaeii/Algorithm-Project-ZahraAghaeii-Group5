@@ -6,32 +6,12 @@ from typing import Optional
 
 from openai import OpenAI
 
-
 @dataclass(frozen=True)
 class LLMConfig:
-    """
-    Configuration for the LLM summarizer.
-
-    model:
-        The OpenAI-compatible model name available via Metis.
-        Example: "gpt-4o-mini" or "gpt-4o".
-
-    base_url:
-        Metis OpenAI wrapper base URL (inside Iran).
-        For environments that block Iran (Colab/Kaggle), Metis suggests:
-          https://api.tapsage.com/openai/v1
-
-    temperature:
-        Lower temperature -> more deterministic summaries.
-
-    max_tokens:
-        Upper bound for output length (token-based).
-    """
     model: str = "gpt-4o-mini"
     base_url: str = "https://api.metisai.ir/openai/v1"
     temperature: float = 0.2
     max_tokens: int = 250
-
 
 class MetisLLMSummarizer:
 
@@ -46,14 +26,7 @@ class MetisLLMSummarizer:
         self.client = OpenAI(api_key=key, base_url=config.base_url)
 
     def summarize(self, text: str, target_sentences: int = 5) -> str:
-        """
-        Generate an abstractive summary of the input text.
-        Args:
-            text: Raw input text (Persian/English supported).
-            target_sentences: Approximate number of sentences in the summary.
-        Returns:
-            A summary string.
-        """
+ 
         text = (text or "").strip()
         if not text:
             return ""

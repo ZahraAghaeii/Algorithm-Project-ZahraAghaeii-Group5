@@ -91,8 +91,3 @@ Includes:
 - High redundancy case  
 - Zero-similarity edge case  
 - Boundary case where k > n  
-
----
-
-## 📂 Repository Structure
-

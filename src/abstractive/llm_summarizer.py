@@ -15,7 +15,6 @@ class LLMConfig:
     model:
         The OpenAI-compatible model name available via Metis.
         Example: "gpt-4o-mini" or "gpt-4o".
-        (You can change this later based on what models you see in the Metis dashboard.)
 
     base_url:
         Metis OpenAI wrapper base URL (inside Iran).
@@ -35,11 +34,6 @@ class LLMConfig:
 
 
 class MetisLLMSummarizer:
-    """
-    Abstractive summarizer using Metis OpenAI-compatible endpoint.
-
-    It reads the API key from environment variable: METISAI_API_KEY
-    """
 
     def __init__(self, config: LLMConfig = LLMConfig(), api_key: Optional[str] = None) -> None:
         self.config = config
@@ -49,17 +43,14 @@ class MetisLLMSummarizer:
                 "Missing METISAI_API_KEY. Set it as an environment variable before running."
             )
 
-        # Metis provides an OpenAI-compatible API. We only change base_url.
         self.client = OpenAI(api_key=key, base_url=config.base_url)
 
     def summarize(self, text: str, target_sentences: int = 5) -> str:
         """
         Generate an abstractive summary of the input text.
-
         Args:
             text: Raw input text (Persian/English supported).
             target_sentences: Approximate number of sentences in the summary.
-
         Returns:
             A summary string.
         """
@@ -67,7 +58,6 @@ class MetisLLMSummarizer:
         if not text:
             return ""
 
-        # Prompt designed to work for both Persian and English input.
         system_msg = (
             "You are a helpful assistant that writes concise, faithful summaries. "
             "Do not invent facts. Keep the summary readable."
@@ -90,6 +80,5 @@ class MetisLLMSummarizer:
             max_tokens=self.config.max_tokens,
         )
 
-        # OpenAI SDK returns choices[0].message.content
         out = resp.choices[0].message.content or ""
         return out.strip()
